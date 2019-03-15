@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 @Data
 public class BDictionary extends BObject{
-    private HashMap<String, BObject> value = new HashMap<>();
+    private HashMap<BString, BObject> value = new HashMap<>();
 
     public BInteger getBInteger(String key){
         return safeTypeConvert(value.get(key), BInteger.class) ;
@@ -29,7 +29,7 @@ public class BDictionary extends BObject{
     }
 
     public BObject put(BString bString, BObject bObject){
-        return value.put(bString.getValue(), bObject);
+        return value.put(bString, bObject);
     }
 
     private <T> T safeTypeConvert(BObject bObject, Class<T> clazz) {
