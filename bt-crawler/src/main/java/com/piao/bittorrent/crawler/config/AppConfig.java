@@ -1,4 +1,4 @@
-package com.piao.bittorrent.crawler.bencode.config;
+package com.piao.bittorrent.crawler.config;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

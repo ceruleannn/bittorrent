@@ -1,7 +1,7 @@
 package com.piao.bittorrent.crawler.bencode;
 
 import com.piao.bittorrent.crawler.Utils.CodeUtils;
-import com.piao.bittorrent.crawler.bencode.common.BParseException;
+import com.piao.bittorrent.crawler.common.BParseException;
 import com.piao.bittorrent.crawler.bencode.model.*;
 
 import java.nio.charset.StandardCharsets;
@@ -39,25 +39,26 @@ public class Bencode {
 
     private static String encodeBString(BString bString){
         return new StringBuilder()
-                .append(bString.getValue().length())
+                .append(bString.getString().length())
                 .append(COLON)
-                .append(bString.getValue())
+                .append(bString.getString())
                 .toString();
     }
     private static String encodeBInteger(BInteger bInteger){
         return new StringBuilder()
                 .append(INTEGER_TOKEN)
-                .append(bInteger.getValue())
+                .append(bInteger.getInteger())
                 .append(END_TOKEN)
                 .toString();
     }
     private static String encodeBList(BList bList){
         StringBuilder sb = new StringBuilder();
         sb.append(LIST_TOKEN);
-        bList.getValue().stream().map(Bencode::encodeAny).forEach(sb::append);
+        bList.getList().stream().map(Bencode::encodeAny).forEach(sb::append);
         sb.append(END_TOKEN);
         return sb.toString();
     }
+
     private static String encodeBDictionary(BDictionary dictionary){
         Function<Map.Entry<BString, BObject>, String> function = entry -> {
             return encodeAny(entry.getKey()) + encodeAny(entry.getValue());
@@ -65,7 +66,7 @@ public class Bencode {
 
         StringBuilder sb = new StringBuilder();
         sb.append(DICTIONARY_TOKEN);
-        dictionary.getValue().entrySet().stream().map(function).forEach(sb::append);
+        dictionary.getDictionary().entrySet().stream().map(function).forEach(sb::append);
         sb.append(END_TOKEN);
         return sb.toString();
     }
@@ -81,7 +82,6 @@ public class Bencode {
     }
 
     private static BObject decodeAny(RawChars rawChars) throws BParseException{
-        System.out.println("any +" + rawChars.chars[rawChars.pos]);
 
         BObject object = null;
         if (Character.isDigit(rawChars.chars[rawChars.pos])){
@@ -129,7 +129,7 @@ public class Bencode {
 
         while (rawChars.chars[rawChars.pos] != END_TOKEN){
             BObject bObject = decodeAny(rawChars);
-            bList.add(bObject);
+            bList.getList().add(bObject);
         }
         rawChars.pos++;
         return bList;
@@ -169,11 +169,11 @@ public class Bencode {
             tokenPos++;
         }
 
-        char[] contnt = new char[tokenPos - rawChars.pos];
-        System.arraycopy(rawChars.chars, rawChars.pos, contnt, 0, tokenPos - rawChars.pos);
+        char[] content = new char[tokenPos - rawChars.pos];
+        System.arraycopy(rawChars.chars, rawChars.pos, content, 0, tokenPos - rawChars.pos);
         rawChars.pos = ++tokenPos;
 
-        return contnt;
+        return content;
     }
 }
 

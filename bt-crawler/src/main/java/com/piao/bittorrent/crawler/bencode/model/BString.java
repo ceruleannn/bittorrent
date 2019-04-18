@@ -14,5 +14,5 @@ import lombok.ToString;
 @NoArgsConstructor
 public class BString extends BObject{
 
-    private String value;
+    private String string;
 }

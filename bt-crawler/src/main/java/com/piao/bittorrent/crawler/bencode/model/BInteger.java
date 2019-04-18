@@ -13,5 +13,5 @@ import lombok.ToString;
 @Data
 @ToString
 public class BInteger extends BObject{
-    private Integer value;
+    private Integer integer;
 }

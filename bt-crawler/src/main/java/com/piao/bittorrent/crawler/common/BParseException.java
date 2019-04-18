@@ -1,4 +1,4 @@
-package com.piao.bittorrent.crawler.bencode.common;
+package com.piao.bittorrent.crawler.common;
 
 import lombok.NoArgsConstructor;
 
